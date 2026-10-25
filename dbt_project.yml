@@ -1,0 +1,13 @@
+name: coolblue_analytics_engineer
+version: '1.0.0'
+
+profile: coolblue_analytics_engineer
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+
+models:
+  coolblue_analytics_engineer:
+    sources:
+      +materialized: view
+      +tags: ['src']

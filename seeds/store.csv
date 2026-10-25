@@ -1,0 +1,9 @@
+store_id,store_name,store_address,store_type_id
+1,Delta Amsterdam Centrum,"Kalverstraat 112, 1012 PK Amsterdam",1
+2,Delta Rotterdam Markthal,"Dominee Jan Scharpstraat 298, 3011 GZ Rotterdam",1
+3,Delta Utrecht Oudegracht,"Oudegracht 154, 3511 AZ Utrecht",2
+4,Delta Den Haag Spui,"Spui 70, 2511 BT Den Haag",2
+5,Delta Eindhoven Stratumseind,"Stratumseind 21, 5611 EN Eindhoven",2
+6,Delta Groningen Herestraat,"Herestraat 45, 9711 LD Groningen",2
+7,Delta Maastricht Vrijthof,"Vrijthof 18, 6211 LD Maastricht",2
+8,Delta Webshop,"Wilhelminakade 1, 3072 AP Rotterdam",3

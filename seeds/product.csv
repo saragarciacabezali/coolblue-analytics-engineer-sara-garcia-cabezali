@@ -1,0 +1,53 @@
+product_id,product_name,product_type_id
+1,Colombia Medium Whole Beans 1kg,1
+2,Kenya Strong Whole Beans 250g,1
+3,Ethiopia Strong Whole Beans 1kg,1
+4,Kenya Medium Whole Beans 1kg,1
+5,Kenya Strong Whole Beans 500g,1
+6,House Blend Strong Whole Beans 500g,1
+7,Ethiopia Mild Whole Beans 1kg,1
+8,Colombia Mild Whole Beans 500g,1
+9,House Blend Mild Whole Beans 500g,1
+10,Colombia Strong Whole Beans 500g,1
+11,Sumatra Medium Whole Beans 250g,1
+12,Guatemala Medium Whole Beans 500g,1
+13,Brazil Medium Ground Coffee 250g,2
+14,Sumatra Medium Ground Coffee 250g,2
+15,Kenya Strong Ground Coffee 500g,2
+16,Sumatra Strong Ground Coffee 500g,2
+17,Colombia Strong Ground Coffee 500g,2
+18,Brazil Medium Ground Coffee 500g,2
+19,Colombia Medium Ground Coffee 500g,2
+20,House Blend Mild Ground Coffee 500g,2
+21,Guatemala Strong Ground Coffee 500g,2
+22,House Blend Medium Ground Coffee 500g,2
+23,Kenya Strong Capsules 10 caps,3
+24,Kenya Mild Capsules 10 caps,3
+25,House Blend Mild Capsules 10 caps,3
+26,Sumatra Strong Capsules 30 caps,3
+27,Guatemala Mild Capsules 30 caps,3
+28,Ethiopia Mild Capsules 30 caps,3
+29,Sumatra Medium Capsules 30 caps,3
+30,Kenya Medium Capsules 30 caps,3
+31,Kenya Strong Capsules 30 caps,3
+32,House Blend Medium Capsules 30 caps,3
+33,Ethiopia Medium Capsules 30 caps,3
+34,Colombia Mild Capsules 10 caps,3
+35,Sumatra Strong Coffee Pods 36 pods,4
+36,House Blend Strong Coffee Pods 36 pods,4
+37,Brazil Mild Coffee Pods 36 pods,4
+38,Sumatra Medium Coffee Pods 36 pods,4
+39,Kenya Medium Coffee Pods 36 pods,4
+40,Kenya Strong Coffee Pods 16 pods,4
+41,House Blend Medium Coffee Pods 36 pods,4
+42,Guatemala Mild Coffee Pods 36 pods,4
+43,Sumatra Strong Instant Coffee 200g,5
+44,Guatemala Mild Instant Coffee 200g,5
+45,House Blend Strong Instant Coffee 200g,5
+46,Colombia Strong Instant Coffee 200g,5
+47,Guatemala Medium Instant Coffee 100g,5
+48,Ethiopia Strong Cold Brew 1L,6
+49,Ethiopia Medium Cold Brew 250ml,6
+50,Colombia Mild Cold Brew 1L,6
+51,Kenya Strong Cold Brew 250ml,6
+52,Kenya Mild Cold Brew 250ml,6

@@ -1,0 +1,13 @@
+coolblue_analytics_engineer:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: project-ca830276-317b-4687-b78
+      dataset: coolblue_analytics_engineer
+      keyfile: ./keys/bigquery.json
+      threads: 1
+      timeout_seconds: 300
+      location: europe-west4
+      priority: interactive
