@@ -2,9 +2,9 @@
 
     SELECT
         CAST(campaign_product_type_id AS STRING)     AS campaign_product_type_id,
-        CAST(campaign_id AS STRING)                 AS campaign_id,
-        CAST(product_type_id AS STRING)             AS product_type_id,
-        CAST(forecast_quantity AS INT64)           AS forecast_quantity
+        CAST(campaign_id AS STRING)                  AS campaign_id,
+        CAST(product_type_id AS STRING)              AS product_type_id,
+        CAST(forecast_quantity AS INT64)             AS forecast_quantity
     FROM {{ ref("campaign_product_type") }}
 
 )

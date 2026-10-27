@@ -1,0 +1,22 @@
+snapshots:
+  - name: snapshot_src_campaign_employee
+    relation: ref('src_campaign_employee')
+    config:
+      strategy: check
+      unique_key: "employee_id"
+      check_cols: all
+      hard_deletes: invalidate
+  - name: snapshot_src_product
+    relation: ref('src_product')
+    config:
+      strategy: check
+      unique_key: "product_id"
+      check_cols: all
+      hard_deletes: invalidate
+  - name: snapshot_src_store
+    relation: ref('src_store')
+    config:
+      strategy: check
+      unique_key: "store_id"
+      check_cols: all
+      hard_deletes: invalidate

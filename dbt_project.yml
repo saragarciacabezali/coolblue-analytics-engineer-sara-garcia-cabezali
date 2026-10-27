@@ -11,3 +11,8 @@ models:
     sources:
       +materialized: view
       +tags: ['src']
+
+snapshots:
+  coolblue_analytics_engineer:
+    +materialized: snapshot
+    +tags: ['src']
