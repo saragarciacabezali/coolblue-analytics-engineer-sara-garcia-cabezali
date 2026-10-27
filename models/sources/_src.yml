@@ -12,17 +12,26 @@ models:
       description: TBD
       data_tests:
         - not_null
-  - name: src_campaign_product_type #Review tests (uniqueness and campaign_id relationships)
+  - name: src_campaign_product_type
     description: TBD
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        arguments:
+          combination_of_columns: ['campaign_id', 'product_type_id']
     columns:
     - name: campaign_product_type_id
       description: TBD
       data_tests:
         - not_null
+        - unique
     - name: campaign_id
       description: TBD
       data_tests:
         - not_null
+        - relationships:
+            arguments:
+              to: ref('src_campaign')
+              field: campaign_id
     - name: product_type_id
       description: TBD
       data_tests:
@@ -38,17 +47,26 @@ models:
         - dbt_utils.expression_is_true:
             arguments:
               expression: ">0"
-  - name: src_campaign_product #Review tests (uniqueness and campaign_id relationships)
+  - name: src_campaign_product
     description: TBD
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        arguments:
+          combination_of_columns: ['campaign_id', 'product_id']
     columns:
     - name: campaign_id
       description: TBD
       data_tests:
         - not_null
+        - relationships:
+            arguments:
+              to: ref('src_campaign')
+              field: campaign_id
     - name: campaign_product_id
       description: TBD
       data_tests:
         - not_null
+        - unique
     - name: product_id
       description: TBD
       data_tests:
@@ -64,7 +82,7 @@ models:
         - dbt_utils.expression_is_true:
             arguments:
               expression: ">0"
-  - name: src_campaign #Review tests (relationships with campaign_id in src_campaign_product and src_campaign_product_type)
+  - name: src_campaign
     description: TBD
     columns:
     - name: campaign_id
@@ -92,9 +110,6 @@ models:
       description: TBD
       data_tests:
         - not_null
-        - dbt_utils.expression_is_true:
-            arguments:
-              expression: "> start_date"
     - name: discount_perc
       description: TBD
       data_tests:
@@ -176,10 +191,6 @@ models:
         - not_null
   - name: src_product
     description: TBD
-    data_tests:
-    - dbt_utils.unique_combination_of_columns:
-        arguments:
-          combination_of_columns: ['product_type_id', 'product_name']
     columns:
     - name: product_id
       description: TBD

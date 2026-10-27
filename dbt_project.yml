@@ -8,8 +8,14 @@ seed-paths: ["seeds"]
 
 models:
   coolblue_analytics_engineer:
+    dimensions:
+      +materialized: table
+      +tags: ['dim']
+    facts:
+      +materialized: table
+      +tags: ['fact']
     sources:
-      +materialized: view
+      +materialized: table
       +tags: ['src']
 
 snapshots:

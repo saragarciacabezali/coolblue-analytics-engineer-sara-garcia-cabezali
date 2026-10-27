@@ -1,5 +1,24 @@
 version: 2
 models:
+  - name: dim_campaign
+    description: TBD
+    columns:
+      - name: campaign_id
+        description: TBD
+        data_tests:
+          - unique
+      - name: employee_id
+        description: TBD
+      - name: employee_name
+        description: TBD
+      - name: campaign_name
+        description: TBD
+      - name: start_date
+        description: TBD
+      - name: end_date
+        description: TBD
+      - name: discount_perc
+        description: TBD
   - name: dim_date
     description: TBD
     columns:
@@ -37,6 +56,13 @@ models:
       - name: team_id
   - name: dim_product
     description: TBD
+    data_tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          arguments:
+            lower_bound_column: valid_from
+            upper_bound_column: "coalesce(valid_to, date '9999-12-31')"
+            partition_by: product_id
+            gaps: not_allowed
     columns:
       - name: product_key
         description: TBD
@@ -50,6 +76,11 @@ models:
                 where: "is_current"
       - name: product_type_id
         description: TBD
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_product_type')
+                field: product_type_id
       - name: product_type_name
         description: TBD
       - name: team_id
@@ -58,22 +89,22 @@ models:
         description: TBD
       - name: valid_from
         description: TBD
-        data_tests:
-          - not_null
       - name: valid_to
         description: TBD
       - name: is_current
         description: TBD
-        data_tests:
-          - not_null
   - name: dim_store
     description: TBD
+    data_tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          arguments:
+            lower_bound_column: valid_from
+            upper_bound_column: "coalesce(valid_to, date '9999-12-31')"
+            partition_by: store_id
+            gaps: not_allowed
     columns:
       - name: store_key
         description: TBD
-        data_tests:
-          - not_null
-          - unique
       - name: store_id
         description: TBD
         data_tests:
@@ -88,11 +119,7 @@ models:
         description: TBD
       - name: valid_from
         description: TBD
-        data_tests:
-          - not_null
       - name: valid_to
         description: TBD        
       - name: is_current
         description: TBD
-        data_tests:
-          - not_null

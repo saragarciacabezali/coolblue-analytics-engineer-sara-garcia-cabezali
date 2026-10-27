@@ -1,12 +1,12 @@
 WITH final AS (
 
     SELECT
-        CAST(FORMAT_DATE('%Y%m%d',CAST(d AS DATE)) AS INTEGER)    AS date_id,
+        CAST(FORMAT_DATE('%Y%m%d',CAST(d AS DATE)) AS INT64)      AS date_id,
         d                                                         AS date,
         CAST(FORMAT_DATE('%a, %b %d %Y', d) AS STRING)            AS date_name,
         -- Day
         EXTRACT(DAY FROM d)                                       AS day_of_month,
-        FORMAT_DATE('%u', d)                                      AS day_of_week_id,
+        CAST(FORMAT_DATE('%u', d) AS INT64)                       AS day_of_week_id,
         FORMAT_DATE('%A', d)                                      AS day_of_week_name,
         -- Month
         EXTRACT(MONTH FROM d)                                     AS month_id,

@@ -1,9 +1,16 @@
 snapshots:
-  - name: snapshot_src_campaign_employee
-    relation: ref('src_campaign_employee')
+  - name: snapshot_src_campaign_product_type
+    relation: ref('src_campaign_product_type')
     config:
       strategy: check
-      unique_key: "employee_id"
+      unique_key: "campaign_product_type_id"
+      check_cols: all
+      hard_deletes: invalidate
+  - name: snapshot_src_campaign_product
+    relation: ref('src_campaign_product')
+    config:
+      strategy: check
+      unique_key: "campaign_product_id"
       check_cols: all
       hard_deletes: invalidate
   - name: snapshot_src_product

@@ -2,7 +2,7 @@
 
 Below is the proposed diagram for integrating the source data into the data warehouse.
 
-![Pipeline architecture](/images/pipeline_architecture.png)
+![Pipeline architecture](images/pipeline_architecture.png)
 
 The idea is to set up an Airflow pipeline, scheduled to run once a day shortly after midnight (00:30, Europe/Amsterdam), extracting the data of the previous day. It is composed of the following tasks:
 

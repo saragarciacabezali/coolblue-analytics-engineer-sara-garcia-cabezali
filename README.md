@@ -1,14 +1,13 @@
-# dbt Learning Project
+# Analytics Engineer Assignment
 
-This repository is a simple starting point for learning dbt and practicing data transformations in a way that mirrors how real analytics engineering work is structured.
+This project contains the data model and data architecture for Delta's campaign analytics: a dashboard showing quantity sold, actual vs forecast performance and top campaigns.
 
-## What this repo is for
+The documentation is split in two parts:
 
-The goal is not just to learn syntax. The goal is to become someone who can:
-- set up a dbt project from scratch
-- understand the purpose of each part of a dbt repo
-- jump into an unfamiliar company project and orient yourself quickly
-- build reliable models with tests, documentation, and maintainable structure
+- **[Data model](data_model.md)** (Question 1): the dimensional model, its design choices (grain, facts, dimensions, SCD strategy, bridge tables) and the schema diagram.
+- **[Extraction pipeline](extraction_pipeline.md)** (Question 2): how both source systems are ingested into the warehouse and how dbt transforms them into the model.
+
+The dbt project in this repository implements the model on BigQuery. The source tables are loaded as dbt seeds with generated sample data, replacing the GCS external tables described in the extraction pipeline.
 
 ## Requirements
 
