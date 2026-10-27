@@ -1,61 +1,37 @@
 version: 2
 models:
   - name: dim_campaign
-    description: TBD
     columns:
       - name: campaign_id
-        description: TBD
         data_tests:
           - unique
       - name: employee_id
-        description: TBD
       - name: employee_name
-        description: TBD
       - name: campaign_name
-        description: TBD
       - name: start_date
-        description: TBD
       - name: end_date
-        description: TBD
       - name: discount_perc
-        description: TBD
   - name: dim_date
-    description: TBD
     columns:
       - name: date_id
-        description: TBD
       - name: date
-        description: TBD
       - name: date_name
-        description: TBD
       - name: day_of_month
-        description: TBD
       - name: day_of_week_id
-        description: TBD
       - name: day_of_week_name
-        description: TBD
       - name: month_id
-        description: TBD
       - name: month_name
-        description: TBD
       - name: year_id
-        description: TBD
       - name: iso_year_id
-        description: TBD
       - name: iso_week_id
-        description: TBD
       - name: iso_week_of_year
-        description: TBD
       - name: quarter
-        description: TBD
   - name: dim_product_type
-    description: TBD
     columns:
       - name: product_type_id
       - name: product_type_name
       - name: team_id
   - name: dim_product
-    description: TBD
     data_tests:
       - dbt_utils.mutually_exclusive_ranges:
           arguments:
@@ -65,36 +41,26 @@ models:
             gaps: not_allowed
     columns:
       - name: product_key
-        description: TBD
         data_tests:
           - unique
       - name: product_id
-        description: TBD
         data_tests:
           - unique:
               config:
                 where: "is_current"
       - name: product_type_id
-        description: TBD
         data_tests:
           - relationships:
               arguments:
                 to: ref('dim_product_type')
                 field: product_type_id
       - name: product_type_name
-        description: TBD
       - name: team_id
-        description: TBD
       - name: product_name
-        description: TBD
       - name: valid_from
-        description: TBD
       - name: valid_to
-        description: TBD
       - name: is_current
-        description: TBD
   - name: dim_store
-    description: TBD
     data_tests:
       - dbt_utils.mutually_exclusive_ranges:
           arguments:
@@ -104,22 +70,14 @@ models:
             gaps: not_allowed
     columns:
       - name: store_key
-        description: TBD
       - name: store_id
-        description: TBD
         data_tests:
           - unique:
               config:
                 where: "is_current"
       - name: store_type_id
-        description: TBD
       - name: store_name
-        description: TBD
       - name: store_address
-        description: TBD
       - name: valid_from
-        description: TBD
-      - name: valid_to
-        description: TBD        
+      - name: valid_to       
       - name: is_current
-        description: TBD

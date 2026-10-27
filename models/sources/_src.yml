@@ -1,31 +1,25 @@
 version: 2
 models:
   - name: src_campaign_employee
-    description: TBD
     columns:
     - name: employee_id
-      description: TBD
       data_tests:
         - not_null
         - unique
     - name: employee_name
-      description: TBD
       data_tests:
         - not_null
   - name: src_campaign_product_type
-    description: TBD
     data_tests:
     - dbt_utils.unique_combination_of_columns:
         arguments:
           combination_of_columns: ['campaign_id', 'product_type_id']
     columns:
     - name: campaign_product_type_id
-      description: TBD
       data_tests:
         - not_null
         - unique
     - name: campaign_id
-      description: TBD
       data_tests:
         - not_null
         - relationships:
@@ -33,7 +27,6 @@ models:
               to: ref('src_campaign')
               field: campaign_id
     - name: product_type_id
-      description: TBD
       data_tests:
         - not_null
         - relationships:
@@ -41,21 +34,18 @@ models:
               to: ref('src_product_type')
               field: product_type_id
     - name: forecast_quantity
-      description: TBD
       data_tests:
         - not_null
         - dbt_utils.expression_is_true:
             arguments:
               expression: ">0"
   - name: src_campaign_product
-    description: TBD
     data_tests:
     - dbt_utils.unique_combination_of_columns:
         arguments:
           combination_of_columns: ['campaign_id', 'product_id']
     columns:
     - name: campaign_id
-      description: TBD
       data_tests:
         - not_null
         - relationships:
@@ -63,12 +53,10 @@ models:
               to: ref('src_campaign')
               field: campaign_id
     - name: campaign_product_id
-      description: TBD
       data_tests:
         - not_null
         - unique
     - name: product_id
-      description: TBD
       data_tests:
         - not_null
         - relationships:
@@ -76,26 +64,21 @@ models:
               to: ref('src_product')
               field: product_id
     - name: forecast_quantity
-      description: TBD
       data_tests:
         - not_null
         - dbt_utils.expression_is_true:
             arguments:
               expression: ">0"
   - name: src_campaign
-    description: TBD
     columns:
     - name: campaign_id
-      description: TBD
       data_tests:
         - not_null
         - unique
     - name: campaign_name
-      description: TBD
       data_tests:
         - not_null
     - name: employee_id
-      description: TBD
       data_tests:
         - not_null
         - relationships:
@@ -103,34 +86,28 @@ models:
               to: ref('src_campaign_employee')
               field: employee_id
     - name: start_date
-      description: TBD
       data_tests:
         - not_null
     - name: end_date
-      description: TBD
       data_tests:
         - not_null
     - name: discount_perc
-      description: TBD
       data_tests:
         - not_null
         - dbt_utils.expression_is_true:
             arguments:
               expression: ">= 20 AND discount_perc <= 40"
   - name: src_order_line
-    description: TBD
     data_tests:
     - dbt_utils.unique_combination_of_columns:
         arguments:
           combination_of_columns: ['order_id', 'product_id']
     columns:
     - name: order_line_id
-      description: TBD
       data_tests:
         - not_null
         - unique
     - name: order_id
-      description: TBD
       data_tests:
         - not_null
         - relationships:
@@ -138,7 +115,6 @@ models:
               to: ref('src_order')
               field: order_id
     - name: product_id
-      description: TBD
       data_tests:
         - not_null
         - relationships:
@@ -146,26 +122,21 @@ models:
               to: ref('src_product')
               field: product_id
     - name: quantity
-      description: TBD
       data_tests:
         - not_null
         - dbt_utils.expression_is_true:
             arguments:
               expression: "> 0"
   - name: src_order
-    description: TBD
     columns:
     - name: order_id
-      description: TBD
       data_tests:
         - not_null
         - unique
     - name: order_date
-      description: TBD
       data_tests:
         - not_null
     - name: store_id
-      description: TBD
       data_tests:
         - not_null
         - relationships:
@@ -173,32 +144,25 @@ models:
               to: ref('src_store')
               field: store_id
   - name: src_product_type
-    description: TBD
     columns:
     - name: product_type_id
-      description: TBD
       data_tests:
         - not_null
         - unique
     - name: product_type_name
-      description: TBD
       data_tests:
         - not_null
         - unique
     - name: team_id
-      description: TBD
       data_tests:
         - not_null
   - name: src_product
-    description: TBD
     columns:
     - name: product_id
-      description: TBD
       data_tests:
         - not_null
         - unique
     - name: product_type_id
-      description: TBD
       data_tests:
         - not_null
         - relationships:
@@ -206,31 +170,25 @@ models:
               to: ref('src_product_type')
               field: product_type_id
     - name: product_name
-      description: TBD
       data_tests:
         - not_null
         - unique
   - name: src_store
-    description: TBD
     data_tests:
     - dbt_utils.unique_combination_of_columns:
         arguments:
           combination_of_columns: ['store_name', 'store_address']
     columns:
     - name: store_id  
-      description: TBD
       data_tests:
         - not_null
         - unique
     - name: store_name
-      description: TBD
       data_tests:
         - not_null
     - name: store_address
-      description: TBD
       data_tests:
         - not_null
     - name: store_type_id
-      description: TBD
       data_tests:
         - not_null
