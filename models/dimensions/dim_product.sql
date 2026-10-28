@@ -19,7 +19,7 @@ WITH final AS (
         sp.dbt_valid_to IS NULL AS is_current
 
     FROM {{ ref("snapshot_src_product") }} AS sp
-    LEFT JOIN {{ ref("src_product_type") }} AS pt -- Edge case: Eventhough we test relationsips between product and product_type in the source, what if a product type is deleted
+    LEFT JOIN {{ ref("src_product_type") }} AS pt -- LEFT JOIN: old versions may point to a product type that no longer exists in the source
         ON sp.product_type_id = pt.product_type_id
 
 )

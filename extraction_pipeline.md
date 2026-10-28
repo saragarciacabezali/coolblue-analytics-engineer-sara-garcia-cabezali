@@ -18,7 +18,7 @@ The idea is to set up an Airflow pipeline, scheduled to run once a day shortly a
 
    The two tasks above run in parallel. Only if both finish successfully is the next task triggered:
 
-3. **dbt_build**: runs `dbt build`, which builds and tests all models defined in the project. For a deeper explanation of the modeling and its dependencies, see [README.md](README.md).
+3. **dbt_build**: runs `dbt build`, which builds and tests all models defined in the project. For a deeper explanation of the modeling and its dependencies, see [data_model.md](data_model.md).
 
 4. **slack_notification**: for visibility, if any task fails, a Slack notification is sent with the pipeline metadata, so it's easy to jump in and debug.
 

@@ -1,4 +1,4 @@
-    WITH final AS (
+WITH final AS (
 
     SELECT
         CAST(campaign_product_id AS STRING) AS campaign_product_id, -- Keep them for snapshot purposes

@@ -1,16 +1,16 @@
 WITH final AS (
 
     SELECT
-        CAST(FORMAT_DATE('%Y%m%d',CAST(d AS DATE)) AS INT64)      AS date_id,
+        CAST(FORMAT_DATE('%Y%m%d', d) AS INT64)                   AS date_id,
         d                                                         AS date,
-        CAST(FORMAT_DATE('%a, %b %d %Y', d) AS STRING)            AS date_name,
+        FORMAT_DATE('%a, %b %d %Y', d)                            AS date_name,
         -- Day
         EXTRACT(DAY FROM d)                                       AS day_of_month,
         CAST(FORMAT_DATE('%u', d) AS INT64)                       AS day_of_week_number,
         FORMAT_DATE('%A', d)                                      AS day_of_week_name,
         -- Month
         EXTRACT(MONTH FROM d)                                     AS month_number,
-        CAST(FORMAT_DATE('%B', d) AS STRING)                      AS month_name,
+        FORMAT_DATE('%B', d)                                      AS month_name,
         -- Year
         EXTRACT(YEAR FROM d)                                      AS year,
         EXTRACT(ISOYEAR FROM d)                                   AS iso_year,

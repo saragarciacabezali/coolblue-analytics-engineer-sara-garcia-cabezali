@@ -47,15 +47,7 @@ Design choices:
 
 ## How sales are linked to campaigns
 
-A product belongs to at most one active campaign at any given time, so each sale belongs to zero or one campaign. This allows storing `campaign_id` directly on `fact_sales`.
-
-The link is resolved in an intermediate model, `int_campaign_membership`:
-
-1. Campaigns that include a whole product type are expanded into their products, using the product type each product had at the time (from `dim_product` versions).
-2. These are combined with the individually included products.
-3. Each membership is limited to the period in which the campaign was running and the product was part of it. Removing a product from a campaign closes its membership; a forecast revision doesn't.
-
-`fact_sales` then assigns each order line the campaign its product belonged to on the order date, or `'-1'` if there was none.
+A product belongs to at most one active campaign at any given time, so each sale belongs to zero or one campaign, and `campaign_id` is stored directly on `fact_sales`. The intermediate model `int_campaign_membership` resolves which products were part of which campaign, and when, including campaigns defined by product type.
 
 ## Bridge tables
 
@@ -74,18 +66,13 @@ No bridge table is needed. Bridges solve the case where one fact row relates to 
 | `dim_product_type` | `product_type_name`, `team_id` | 1 | The dashboard is for planning on the current portfolio; team accountability over time isn't required |
 | `dim_campaign` | all attributes | 1 | Defined by the campaign manager; the current values are used |
 
-How history is captured:
-
-- **The sources only hold current state,** so history is captured with dbt snapshots of the source tables (not of the dimensions), for `store`, `product`, `campaign_product` and `campaign_product_type`. Snapshotting the sources means the dimensions can always be rebuilt if their logic changes.
-- **Snapshots use `check_cols: all`** (every change in the source is recorded as a new version, so history is available for any attribute if needed later) and **`hard_deletes: invalidate`** (a deleted row is closed instead of disappearing, e.g. a product removed from a campaign).
-- **Type 1 attributes on Type 2 dimensions** take the latest value across all versions.
-- **The first version of each store and product starts on 2020-01-01,** so sales from before the first snapshot run still find a version. Campaign memberships that already existed at the first snapshot run are treated the same way; memberships added later start on the day they were added. `valid_to` is exclusive and NULL for the current version.
+History is captured with dbt snapshots of the source tables that only hold current state (`store`, `product`, `campaign_product`, `campaign_product_type`).
 
 ## Keys
 
-- **Identifiers are STRING:** they are labels rather than quantities, and this keeps the model robust to format changes in either source system. `date_id` is the exception: an INT64 in `YYYYMMDD` form, so it sorts and filters chronologically.
-- **Type 2 dimensions use surrogate keys** (`store_key`, `product_key`, one per version). Type 1 dimensions keep their natural keys.
-- **`fact_sales` carries both keys:** `store_key` and `product_key` join to the version valid on the order date; `store_id` and `product_id` allow filtering across versions.
+- Identifiers are STRING; `date_id` is an INT64 in `YYYYMMDD` form.
+- Type 2 dimensions use surrogate keys (`store_key`, `product_key`); Type 1 dimensions keep their natural keys.
+- `fact_sales` carries both the surrogate and the natural keys of store and product.
 
 ## Actual vs forecast
 
@@ -112,10 +99,8 @@ Forecasts are compared at campaign level over the campaign's full period. A comp
 
 ## Tests
 
-- **Source models** test the incoming data: keys are unique and not null, relationships between tables hold, quantities and forecasts are positive, discounts are between 20% and 40%, and campaigns last at least two weeks.
-- **Downstream models** only test what their own logic could break, for example: no duplicate `campaign_id` after adding the "No campaign" row, one current version per store and product, and no overlapping validity ranges in the Type 2 dimensions.
-- **Campaign rules** (one active campaign per product, no double inclusion) are tested with severity `error` on `int_campaign_membership`, since breaking them would silently assign sales to the wrong campaign. A single test covers both: no product may have overlapping membership periods.
-- **`fact_sales`** is tested to contain exactly one row per source order line, so no sale is dropped or duplicated by the joins, and every sale must find a store and product version.
+- Source models test the incoming data: keys, relationships, and value ranges such as discounts and campaign length.
+- Downstream models only test what their own logic could break, including the campaign rules (one active campaign per product, no double inclusion) with severity `error`.
 
 ## Possible extensions
 
