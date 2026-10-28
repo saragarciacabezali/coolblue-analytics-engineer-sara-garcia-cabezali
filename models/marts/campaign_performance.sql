@@ -36,7 +36,7 @@ WITH actuals AS (
         dc.employee_name,
         dc.start_date,
         dc.end_date,
-        dc.discount_perc,
+        dc.discount_rate,
         dc.end_date >= CURRENT_DATE('Europe/Amsterdam')                         AS is_running,
         COALESCE(a.actual_quantity, 0)                                          AS actual_quantity,
         COALESCE(f.forecast_quantity, 0)                                        AS forecast_quantity,

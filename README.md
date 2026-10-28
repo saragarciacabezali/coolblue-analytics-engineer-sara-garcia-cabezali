@@ -69,13 +69,16 @@ coolblue-analytics-engineer
 | `<event>_date` | Calendar date (DATE) | `order_date`, `start_date` |
 | `valid_from` / `valid_to` | Validity period of a version; `valid_to` is exclusive and NULL for the current version | `dim_store`, `dim_product` |
 | `is_<condition>` | Boolean flag | `is_current`, `is_running` |
-| `iso_` prefix | ISO calendar (weeks Monday to Sunday) | `iso_year_id`, `iso_week_of_year` |
+| `iso_` prefix | ISO calendar (weeks Monday to Sunday) | `iso_year`, `iso_week_number` |
+| `<attribute>_number` | Position in a calendar cycle (INT64) | `day_of_week_number`, `month_number` |
+| `<attribute>_label` | Formatted text for display | `iso_week_label` (e.g. `2026-W44`) |
+| `<measure>_rate` / `<measure>_ratio` | Decimal fraction (0.25 = 25%) | `discount_rate`, `actual_vs_forecast_ratio` |
 
 ### Types and units
 
 - **Identifiers** are STRING. The exception is `date_id`, an INT64 in `YYYYMMDD` form, so it sorts and filters chronologically.
-- **Whole numbers** are INT64: quantities are counted in units sold (`quantity`, `forecast_quantity`), and percentages are whole numbers (`discount_perc = 25` means 25%).
-- **Ratios** are decimals: `actual_vs_forecast_ratio = 1.12` means 12% above forecast.
+- **Whole numbers** are INT64. Quantities count packages sold, regardless of package size: one 1kg bag and one 250g bag are both a quantity of 1 (`quantity`, `forecast_quantity`).
+- **Rates and ratios** are decimal fractions: `discount_rate = 0.25` means 25%. Exact business values such as discounts are NUMERIC, so they are stored exactly; calculated ratios are FLOAT64 (`actual_vs_forecast_ratio = 1.12` means 12% above forecast).
 - **Dates** are DATE, as local business dates. Snapshot timestamps are converted to DATE for validity periods.
 - **Casting happens only in the `src_` layer,** with `CAST` (not `SAFE_CAST`), so invalid values fail loudly instead of becoming NULL. Downstream models don't re-cast.
 

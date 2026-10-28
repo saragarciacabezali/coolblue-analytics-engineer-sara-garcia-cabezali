@@ -95,12 +95,12 @@ models:
     - name: end_date
       data_tests:
         - not_null
-    - name: discount_perc
+    - name: discount_rate
       data_tests:
         - not_null
         - dbt_utils.expression_is_true:
             arguments:
-              expression: ">= 20 AND discount_perc <= 40"
+              expression: "BETWEEN 0.2 AND 0.4"
   - name: src_order_line
     data_tests:
     - dbt_utils.unique_combination_of_columns:

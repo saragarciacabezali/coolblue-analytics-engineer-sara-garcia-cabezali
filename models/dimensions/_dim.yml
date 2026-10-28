@@ -10,21 +10,21 @@ models:
       - name: campaign_name
       - name: start_date
       - name: end_date
-      - name: discount_perc
+      - name: discount_rate
   - name: dim_date
     columns:
       - name: date_id
       - name: date
       - name: date_name
       - name: day_of_month
-      - name: day_of_week_id
+      - name: day_of_week_number
       - name: day_of_week_name
-      - name: month_id
+      - name: month_number
       - name: month_name
-      - name: year_id
-      - name: iso_year_id
-      - name: iso_week_id
-      - name: iso_week_of_year
+      - name: year
+      - name: iso_year
+      - name: iso_week_label
+      - name: iso_week_number
       - name: quarter
   - name: dim_product_type
     columns:

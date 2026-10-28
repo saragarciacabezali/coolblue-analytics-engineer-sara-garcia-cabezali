@@ -7,7 +7,7 @@ WITH campaigns AS (
         cm.campaign_name,
         cm.start_date,
         cm.end_date,
-        cm.discount_perc
+        cm.discount_rate
     FROM {{ ref("src_campaign") }} AS cm
     INNER JOIN {{ ref("src_campaign_employee") }} AS ce
         ON cm.employee_id = ce.employee_id
@@ -21,7 +21,7 @@ WITH campaigns AS (
         'No campaign'           AS campaign_name,
         CAST(NULL AS DATE)      AS start_date,
         CAST(NULL AS DATE)      AS end_date,
-        CAST(NULL AS INT64)     AS discount_perc
+        CAST(NULL AS NUMERIC)   AS discount_rate
 
 ), final AS (
 

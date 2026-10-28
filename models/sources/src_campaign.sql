@@ -6,7 +6,7 @@
         CAST(employee_id AS STRING)     AS employee_id,
         CAST(start_date AS DATE)        AS start_date,
         CAST(end_date AS DATE)          AS end_date,
-        CAST(discount_perc AS INT64)    AS discount_perc,
+        CAST(discount_perc AS NUMERIC) / 100   AS discount_rate,  -- 0.25 = 25%
 
     FROM {{ ref("campaign") }}
 
