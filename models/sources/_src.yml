@@ -70,6 +70,10 @@ models:
             arguments:
               expression: ">0"
   - name: src_campaign
+    data_tests:
+    - dbt_utils.expression_is_true:
+        arguments:
+          expression: "DATE_DIFF(end_date, start_date, DAY) >= 14"  # Campaigns run for at least two weeks
     columns:
     - name: campaign_id
       data_tests:
