@@ -2,7 +2,9 @@
 
 Below is the proposed dimensional model to support the dashboard use cases: quantity sold, actual vs forecast performance, and top campaigns.
 
-![Dimensional model](images/dimensional_model_schema.png)
+<p align="center">
+  <img src="images/dimensional_model_schema.png" alt="Dimensional model" width="600">
+</p>
 
 The model is a star schema with three fact tables and five dimensions. Sales and forecasts are kept in separate facts because they are recorded at different grains, and they are compared through the dimensions they share (campaign, product and product type).
 
@@ -110,5 +112,6 @@ Forecasts are compared at campaign level over the campaign's full period. A comp
 - The campaign manager as Type 2, if sales should be credited to the manager responsible at the time of each sale.
 - A Type 3 `prior_team_id` on product types, if team accountability across reorganisations is needed.
 - Store attributes such as size or last renovation date.
+- A package size attribute on `dim_product`. `quantity` counts packages sold regardless of size (one 1kg bag and one 250g bag are both 1), so this would allow comparing sales in kilograms.
 - One BigQuery dataset per layer (`raw`, `staging`, `snapshots`, `intermediate`, `core` for dimensions and facts, `reporting` for marts), configured with `+schema` per folder in dbt. Permissions in BigQuery are set per dataset, so dashboard users can be limited to the reporting layer, and the snapshots, which can't be rebuilt, are kept apart and protected.
 - Separate environments: a `dev` target writing to personal datasets, and a `prod` target (ideally a separate GCP project) that only the scheduled Airflow run writes to.

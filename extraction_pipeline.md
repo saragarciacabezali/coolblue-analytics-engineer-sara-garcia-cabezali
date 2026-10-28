@@ -2,7 +2,9 @@
 
 Below is the proposed diagram for integrating the source data into the data warehouse.
 
-![Pipeline architecture](images/pipeline_architecture.png)
+<p align="center">
+  <img src="images/pipeline_architecture.png" alt="Pipeline architecture" width="600">
+</p>
 
 The idea is to set up an Airflow pipeline, scheduled to run once a day shortly after midnight (00:30, Europe/Amsterdam), extracting the data of the previous day. It is composed of the following tasks:
 
@@ -18,7 +20,7 @@ The idea is to set up an Airflow pipeline, scheduled to run once a day shortly a
 
    The two tasks above run in parallel. Only if both finish successfully is the next task triggered:
 
-3. **dbt_build**: runs `dbt build`, which builds and tests all models defined in the project. For a deeper explanation of the modeling and its dependencies, see [data_model.md](data_model.md).
+3. **dbt_build**: runs `dbt build`, which builds and tests all models defined in the project. For a deeper explanation of the modeling and dependencies, see [data_model.md](data_model.md).
 
 4. **slack_notification**: for visibility, if any task fails, a Slack notification is sent with the pipeline metadata, so it's easy to jump in and debug.
 
@@ -38,12 +40,12 @@ The extraction tasks don't treat every table the same way. Transactional tables 
 | `campaign_product` | Campaign Management System | Full | The complete table |
 | `campaign_product_type` | Campaign Management System | Full | The complete table |
 
-Downstream, the `src_` models read the files accordingly: for reference tables, only the latest extraction is used; for orders, all files are read together and de-duplicated on their primary key.
+Downstream, the `src_` models read the files accordingly: for reference tables, only the latest extraction is used; for transactional tables, only the newly extracted day is processed and merged into the existing data (incremental models). The facts are still rebuilt in full on every run, so campaign and dimension version assignments always include the latest data.
 
 ## Comments
 
 - The pipeline runs once a day because the finest date grain on the dashboard is a day. It runs shortly after midnight and extracts the previous day, so the day is complete for every store, including the webshop, whose orders can come in until midnight.
-- Every row carries an `extract_date` column with the extracted day, so downstream models can tell which extraction a row comes from.
+- Every row carries an `extract_date` column with the extracted day. Each source points to the whole folder of its table, and the `src_` models filter on `extract_date`, so each run only processes the day that was just extracted.
 - Reruns overwrite the file for the same date, so a retried run doesn't create duplicates.
 - Parquet is used as the file format, so column types and schema travel with the data.
-- Since the pipeline runs daily, data accumulates quickly in the bucket. A GCS lifecycle rule can delete (or move to colder storage) files older than an agreed period.
+- Since the pipeline runs daily, data accumulates quickly in the bucket. A GCS lifecycle rule can delete files older than an agreed period.
