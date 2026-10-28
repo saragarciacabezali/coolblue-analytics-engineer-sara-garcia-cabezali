@@ -14,6 +14,12 @@ models:
     facts:
       +materialized: table
       +tags: ['fact']
+    intermediate:
+      +materialized: table
+      +tags: ['int']
+    marts:
+      +materialized: view   # depends on the current date, so it is always evaluated at query time
+      +tags: ['mart']
     sources:
       +materialized: table
       +tags: ['src']

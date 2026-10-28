@@ -1,0 +1,14 @@
+version: 2
+models:
+  - name: int_campaign_membership
+    data_tests:
+      # A product can't be in two campaigns at the same time, nor twice in the same campaign
+      # (individually and through its product type). Breaking either would assign sales wrongly.
+      - dbt_utils.mutually_exclusive_ranges:
+          arguments:
+            lower_bound_column: valid_from
+            upper_bound_column: valid_to
+            partition_by: product_id
+            gaps: allowed
+          config:
+            severity: error

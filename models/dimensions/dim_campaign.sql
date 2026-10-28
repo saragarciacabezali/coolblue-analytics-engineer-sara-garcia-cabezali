@@ -15,13 +15,13 @@ WITH campaigns AS (
 ), no_campaign AS (
 
     SELECT
-        "-1"                    AS campaign_id,
+        '-1'                    AS campaign_id,
         CAST(NULL AS STRING)    AS employee_id,
         'No manager'            AS employee_name,
         'No campaign'           AS campaign_name,
         CAST(NULL AS DATE)      AS start_date,
         CAST(NULL AS DATE)      AS end_date,
-        CAST(NULL AS int64)     AS discount_perc
+        CAST(NULL AS INT64)     AS discount_perc
 
 ), final AS (
 

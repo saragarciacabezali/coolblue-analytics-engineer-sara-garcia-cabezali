@@ -1,0 +1,24 @@
+version: 2
+models:
+  - name: fact_sales
+    data_tests:
+      # Every order line ends up in the fact exactly once: none dropped, none duplicated by the joins
+      - dbt_utils.equal_rowcount:
+          arguments:
+            compare_model: ref('src_order_line')
+    columns:
+      - name: order_line_id
+        data_tests:
+          - unique
+      - name: date_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_id
+      - name: store_key
+        data_tests:
+          - not_null
+      - name: product_key
+        data_tests:
+          - not_null

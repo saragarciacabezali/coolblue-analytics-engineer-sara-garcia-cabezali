@@ -53,7 +53,7 @@ The link is resolved in an intermediate model, `int_campaign_membership`:
 
 1. Campaigns that include a whole product type are expanded into their products, using the product type each product had at the time (from `dim_product` versions).
 2. These are combined with the individually included products.
-3. Each membership is limited to the period in which the campaign was running and the product was part of it.
+3. Each membership is limited to the period in which the campaign was running and the product was part of it. Removing a product from a campaign closes its membership; a forecast revision doesn't.
 
 `fact_sales` then assigns each order line the campaign its product belonged to on the order date, or `'-1'` if there was none.
 
@@ -79,7 +79,7 @@ How history is captured:
 - **The sources only hold current state,** so history is captured with dbt snapshots of the source tables (not of the dimensions), for `store`, `product`, `campaign_product` and `campaign_product_type`. Snapshotting the sources means the dimensions can always be rebuilt if their logic changes.
 - **Snapshots use `check_cols: all`** (every change in the source is recorded as a new version, so history is available for any attribute if needed later) and **`hard_deletes: invalidate`** (a deleted row is closed instead of disappearing, e.g. a product removed from a campaign).
 - **Type 1 attributes on Type 2 dimensions** take the latest value across all versions.
-- **The first version of each record starts on 2020-01-01,** so sales from before the first snapshot run still find a version. `valid_to` is exclusive and NULL for the current version.
+- **The first version of each store and product starts on 2020-01-01,** so sales from before the first snapshot run still find a version. Campaign memberships that already existed at the first snapshot run are treated the same way; memberships added later start on the day they were added. `valid_to` is exclusive and NULL for the current version.
 
 ## Keys
 
@@ -108,18 +108,22 @@ Forecasts are compared at campaign level over the campaign's full period. A comp
 7. Orders are not updated, cancelled or returned after creation, and a product appears at most once per order.
 8. Product IDs are shared between the Ordering System and the Campaign Management System.
 9. Employees are never deleted from the Campaign Management System: `campaign.employee_id` is a foreign key to `campaign_manager`, so employees who leave are kept.
+10. Actuals are compared against the latest forecast available for each campaign.
 
 ## Tests
 
 - **Source models** test the incoming data: keys are unique and not null, relationships between tables hold, quantities and forecasts are positive, discounts are between 20% and 40%, and campaigns last at least two weeks.
 - **Downstream models** only test what their own logic could break, for example: no duplicate `campaign_id` after adding the "No campaign" row, one current version per store and product, and no overlapping validity ranges in the Type 2 dimensions.
-- **Campaign rules** (one active campaign per product, no double inclusion) are tested with severity `error`, since breaking them would silently assign sales to the wrong campaign.
+- **Campaign rules** (one active campaign per product, no double inclusion) are tested with severity `error` on `int_campaign_membership`, since breaking them would silently assign sales to the wrong campaign. A single test covers both: no product may have overlapping membership periods.
+- **`fact_sales`** is tested to contain exactly one row per source order line, so no sale is dropped or duplicated by the joins, and every sale must find a store and product version.
 
 ## Possible extensions
 
 - Dutch public holidays in `dim_date` (from a seed).
 - A promotion coverage table, to answer which products were in a campaign but didn't sell.
-- A campaign status or progress column, and a pacing indicator for running campaigns (forecast pro-rated to the days elapsed).
+- A progress column (share of the campaign elapsed) and a pacing indicator for running campaigns (forecast pro-rated to the days elapsed) in `campaign_performance`.
 - The campaign manager as Type 2, if sales should be credited to the manager responsible at the time of each sale.
 - A Type 3 `prior_team_id` on product types, if team accountability across reorganisations is needed.
 - Store attributes such as size or last renovation date.
+- One BigQuery dataset per layer (`raw`, `staging`, `snapshots`, `intermediate`, `core` for dimensions and facts, `reporting` for marts), configured with `+schema` per folder in dbt. Permissions in BigQuery are set per dataset, so dashboard users can be limited to the reporting layer, and the snapshots, which can't be rebuilt, are kept apart and protected.
+- Separate environments: a `dev` target writing to personal datasets, and a `prod` target (ideally a separate GCP project) that only the scheduled Airflow run writes to.
