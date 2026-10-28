@@ -1,12 +1,12 @@
 version: 2
 models:
-  - name: src_campaign_employee
+  - name: src_campaign_manager
     columns:
-    - name: employee_id
+    - name: campaign_manager_id
       data_tests:
         - not_null
         - unique
-    - name: employee_name
+    - name: campaign_manager_name
       data_tests:
         - not_null
   - name: src_campaign_product_type
@@ -82,13 +82,13 @@ models:
     - name: campaign_name
       data_tests:
         - not_null
-    - name: employee_id
+    - name: campaign_manager_id
       data_tests:
         - not_null
         - relationships:
             arguments:
-              to: ref('src_campaign_employee')
-              field: employee_id
+              to: ref('src_campaign_manager')
+              field: campaign_manager_id
     - name: start_date
       data_tests:
         - not_null

@@ -33,7 +33,7 @@ WITH actuals AS (
     SELECT
         dc.campaign_id,
         dc.campaign_name,
-        dc.employee_name,
+        dc.campaign_manager_name,
         dc.start_date,
         dc.end_date,
         dc.discount_rate,

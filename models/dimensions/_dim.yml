@@ -5,8 +5,8 @@ models:
       - name: campaign_id
         data_tests:
           - unique
-      - name: employee_id
-      - name: employee_name
+      - name: campaign_manager_id
+      - name: campaign_manager_name
       - name: campaign_name
       - name: start_date
       - name: end_date
